@@ -42,12 +42,12 @@ public class JwtService {
         if (obj instanceof NhanVien) {
             NhanVien nv = (NhanVien) obj;
             Algorithm algorithm = Algorithm.HMAC256(secret_key.getBytes());
-            return JWT.create().withSubject(nv.getEmail()).withExpiresAt(new Date(System.currentTimeMillis() + 50 * 60 * 1000))
+            return JWT.create().withSubject(nv.getEmail()).withExpiresAt(new Date(System.currentTimeMillis() + 120 * 60 * 1000))
                     .sign(algorithm);
         } else if (obj instanceof KhachHang) {
             KhachHang kh = (KhachHang) obj;
             Algorithm algorithm = Algorithm.HMAC256(secret_key.getBytes());
-            return JWT.create().withSubject(kh.getEmail()).withExpiresAt(new Date(System.currentTimeMillis() + 50 * 60 * 1000))
+            return JWT.create().withSubject(kh.getEmail()).withExpiresAt(new Date(System.currentTimeMillis() + 120 * 60 * 1000))
                     .sign(algorithm);
         }
         return null;

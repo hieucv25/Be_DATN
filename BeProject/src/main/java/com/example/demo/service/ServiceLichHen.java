@@ -40,4 +40,10 @@ public interface ServiceLichHen {
     Page<LichHen> findByStatusAndType(int status ,boolean type, Pageable pageable);
 
     Page<LichHen> findByName(String keyword, Pageable pageable);
+
+    String validationFormAdd(LichHen lh);
+
+    String validationFormUpdate(String id,LichHen lh);
+
+    String generateId(List<LichHen> list,LichHen lh);
 }

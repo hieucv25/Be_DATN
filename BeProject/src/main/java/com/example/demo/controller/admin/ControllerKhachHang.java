@@ -8,7 +8,6 @@ import com.example.demo.service.Impl.ServiceLichHenImpl;
 import com.example.demo.service.Impl.SericeLichSuLichHenImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -119,7 +117,7 @@ public class ControllerKhachHang {
     @PostMapping("/validate")
     private String validate(@RequestBody(required = false) KhachHang kh){
         String expression = "^[a-zA-Z0-9._%+-]{1,50}@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
-        String regexNumberPhone = "^(\\+84|0)(3[2-9]|5[2689]|7[06-9]|8[1-9]|9[0-46-8])[0-9]{6}$";
+        String regexNumberPhone = "^(\\+84|0)(3[2-9]|5[2689]|7[06-9]|8[1-9]|9[0-46-8])[0-9]{7}$";
         List<KhachHang> list = khsv.getAll();
         if(kh.getHoTen().isEmpty()){
             return "Họ Tên Chưa Được Nhập";
@@ -219,6 +217,7 @@ public class ControllerKhachHang {
         khUpdate.setQuanHuyen(kh.getQuanHuyen());
         khUpdate.setGioiTinh(kh.isGioiTinh());
         khUpdate.setMatKhau(kh.getMatKhau());
+        khUpdate.setMatKhauMaHoa(passwordEncoder.encode(kh.getMatKhau()));
         khUpdate.setNgaySua(LocalDateTime.now());
         khsv.update(khUpdate);
         return khsv.getById(UUID.fromString(id.toLowerCase(Locale.ROOT)));

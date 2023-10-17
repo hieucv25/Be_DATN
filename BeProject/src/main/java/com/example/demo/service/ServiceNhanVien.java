@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.model.Author_NhanVien;
 import com.example.demo.model.NhanVien;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,13 +14,11 @@ public interface ServiceNhanVien {
 
     List<NhanVien> getAll();
 
-    NhanVien getByEmail(String email);
-
     int deleteById(UUID id);
 
     boolean existsById(UUID id);
 
-    NhanVien findByNumberPhone(String number_phone);
+    Optional<NhanVien> findByNumberPhone(String number_phone);
 
     List<NhanVien> getAllNV();
 
@@ -31,13 +30,13 @@ public interface ServiceNhanVien {
 
     Page<NhanVien> phanTrang(Pageable nv);
 
-    NhanVien finbyma(String maNhanVien);
+    NhanVien findByMa(String maNhanVien);
 
-    NhanVien findbyemail(String email);
+    Optional<NhanVien> findByEmail(String email);
 
-    NhanVien findbysdt(String sdt);
+    Optional<NhanVien> findBySDT(String sdt);
 
-    NhanVien findbycmnd(String cmnd);
+    Optional<NhanVien> findByCCCD(String cmnd);
 
     List<NhanVien> findbychucvu(Integer chucVu);
 
@@ -46,4 +45,10 @@ public interface ServiceNhanVien {
     List<NhanVien> timkiemnv(String keyword);
 
     List<NhanVien> khoangns(Date startDate, Date endDate);
+
+    void add_author(Author_NhanVien author_nhanVien);
+
+    void delete_author(int id);
+
+    Author_NhanVien getByRefreshToken(String refreshToken);
 }

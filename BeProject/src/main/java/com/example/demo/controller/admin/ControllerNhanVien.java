@@ -58,7 +58,7 @@ public class ControllerNhanVien {
         if (nhanVien.getEmail() == null || nhanVien.getEmail().isEmpty()) {
             return ResponseEntity.badRequest().body("Email không được để trống");
         } else {
-            NhanVien nhanvienemail = serviceNhanVien.findbyemail(nhanVien.getEmail());
+            NhanVien nhanvienemail = serviceNhanVien.findByEmail(nhanVien.getEmail()).get();
             if (nhanvienemail != null) {
                 return ResponseEntity.badRequest().body("Email đã tồn tại");
             }
@@ -66,7 +66,7 @@ public class ControllerNhanVien {
         if (nhanVien.getSdt() == null || nhanVien.getSdt().isEmpty()) {
             return ResponseEntity.badRequest().body("Số Điện Thoại Không được để trống");
         } else {
-            NhanVien nhanviensdt = serviceNhanVien.findbysdt(nhanVien.getSdt());
+            NhanVien nhanviensdt = serviceNhanVien.findBySDT(nhanVien.getSdt()).get();
             if (nhanviensdt != null) {
                 return ResponseEntity.badRequest().body("Sdt đã tồn tại");
             }
@@ -75,7 +75,7 @@ public class ControllerNhanVien {
         if (nhanVien.getCccd() == null || nhanVien.getCccd().isEmpty()) {
             return ResponseEntity.badRequest().body("CMND không được để trống");
         } else {
-            NhanVien nhanviencmnd = serviceNhanVien.findbycmnd(nhanVien.getCccd());
+            NhanVien nhanviencmnd = serviceNhanVien.findByCCCD(nhanVien.getCccd()).get();
             if (nhanviencmnd != null) {
                 return ResponseEntity.badRequest().body("Cmnd đã tồn tại");
             }

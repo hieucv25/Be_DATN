@@ -1,6 +1,5 @@
 package com.example.demo.model;
 
-import com.example.demo.model.KhachHang;
 import jakarta.persistence.*;
 import lombok.*;
 

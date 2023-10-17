@@ -55,13 +55,13 @@ public interface NhanVienRepository extends JpaRepository<NhanVien, UUID> {
     NhanVien finByMa(@Param("maNhanVien") String maNhanVien);
 
     @Query("Select nv From NhanVien nv Where nv.email like :email")
-    NhanVien finByEmail(@Param("email") String email);
+    Optional<NhanVien> finByEmail(@Param("email") String email);
 
     @Query("Select nv From NhanVien nv Where nv.sdt like :sdt")
-    NhanVien finBysdt(@Param("sdt") String sdt);
+    Optional<NhanVien> finBySDT(@Param("sdt") String sdt);
 
     @Query("Select nv From NhanVien nv Where nv.cccd like :cmnd")
-    NhanVien finBycccd(@Param("cmnd") String cccd);
+    Optional<NhanVien> finByCCCD(@Param("cmnd") String cccd);
 
     @Query("Select nv From NhanVien nv Where nv.cv.maChucVu = :chucVu")
     List<NhanVien> findByChucVu(Integer chucVu);

@@ -1,6 +1,9 @@
 package com.example.demo.service.Impl;
 
+import com.example.demo.model.Author_NhanVien;
+import com.example.demo.model.KhachHang;
 import com.example.demo.model.NhanVien;
+import com.example.demo.repository.Author_NhanVien_Repository;
 import com.example.demo.repository.ChucVuRepository;
 import com.example.demo.repository.NhanVienRepository;
 import com.example.demo.service.ServiceNhanVien;
@@ -24,17 +27,15 @@ public class ServiceNhanVienImpl implements ServiceNhanVien {
     @Autowired
     ChucVuRepository cvrp;
 
+    @Autowired
+    Author_NhanVien_Repository auth;
+
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 
     @Override
     public List<NhanVien> getAll() {
         return nvrp.getAll();
-    }
-
-    @Override
-    public NhanVien getByEmail(String email) {
-        return nvrp.findByEmail(email).get();
     }
 
     @Override
@@ -48,8 +49,8 @@ public class ServiceNhanVienImpl implements ServiceNhanVien {
     }
 
     @Override
-    public NhanVien findByNumberPhone(String number_phone) {
-        return nvrp.findByNumberPhone(number_phone).get();
+    public Optional<NhanVien> findByNumberPhone(String number_phone) {
+        return nvrp.findByNumberPhone(number_phone);
     }
 
     @Override
@@ -79,24 +80,24 @@ public class ServiceNhanVienImpl implements ServiceNhanVien {
     }
 
     @Override
-    public NhanVien finbyma(String maNhanVien) {
+    public NhanVien findByMa(String maNhanVien) {
         return nvrp.finByMa(maNhanVien);
     }
 
 
     @Override
-    public NhanVien findbyemail(String email) {
+    public Optional<NhanVien> findByEmail(String email) {
         return nvrp.finByEmail(email);
     }
 
     @Override
-    public NhanVien findbysdt(String sdt) {
-        return nvrp.finBysdt(sdt);
+    public Optional<NhanVien> findBySDT(String sdt) {
+        return nvrp.finBySDT(sdt);
     }
 
     @Override
-    public NhanVien findbycmnd(String cmnd) {
-        return nvrp.finBycccd(cmnd);
+    public Optional<NhanVien> findByCCCD(String cmnd) {
+        return nvrp.finByCCCD(cmnd);
     }
 
     @Override
@@ -119,5 +120,20 @@ public class ServiceNhanVienImpl implements ServiceNhanVien {
     @Override
     public List<NhanVien> khoangns(java.sql.Date startDate, Date endDate) {
         return nvrp.findngaysinh(startDate,endDate);
+    }
+
+    @Override
+    public void add_author(Author_NhanVien author_nhanVien) {
+        auth.saveAndFlush(author_nhanVien);
+    }
+
+    @Override
+    public void delete_author(int id) {
+        auth.deleteById(id);
+    }
+
+    @Override
+    public Author_NhanVien getByRefreshToken(String refreshToken) {
+        return auth.getByRefreshToken(refreshToken);
     }
 }

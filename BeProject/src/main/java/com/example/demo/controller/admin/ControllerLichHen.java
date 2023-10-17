@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,25 +59,7 @@ public class ControllerLichHen {
     @PostMapping("/save")
     private LichHen save(@RequestBody LichHen lh) {
         List<LichHen> list = svlh.findAllAndSort(Sort.by("ngayTao").ascending());
-        if (lh.getMaLichHen() == null) {
-            lh.setMaLichHen("LH" + list.size());
-            for (LichHen lichHen : list
-            ) {
-                if (lichHen.getMaLichHen().equalsIgnoreCase(lh.getMaLichHen())) {
-                    int index = Integer.valueOf(lh.getMaLichHen().substring(2));
-                    int next = index + 1;
-                    lh.setMaLichHen("LH" + next);
-                }
-            }
-            for (LichHen lichHen : list
-            ) {
-                if (lichHen.getMaLichHen().equalsIgnoreCase(lh.getMaLichHen())) {
-                    int index = Integer.valueOf(lh.getMaLichHen().substring(2));
-                    int next = index + 1;
-                    lh.setMaLichHen("LH" + next);
-                }
-            }
-        }
+        lh.setMaLichHen(svlh.generateId(list,lh));
         lh.setNgayTao(LocalDateTime.now());
         System.out.println(lh.isLoaiLichHen());
         svlh.save(lh);
@@ -144,57 +127,12 @@ public class ControllerLichHen {
     }
 
     @PostMapping("/validate")
-    private String validate(@RequestBody(required = false) LichHen lh){
-        String regex = "^(0\\d{8,10})$";
-        List<LichHen> list = svlh.getAll();
-        if(lh.getThoiGianDuKien().equals("0")){
-            return "Thời Gian Dự Kiến Chưa Được Chọn!!";
-        }
-
-        if(lh.getThoiGianDat().isBefore(LocalDateTime.now())){
-            return "Ngày và giờ bạn đặt phải lớn hơn thời gian hiện tại!";
-        }
-        if(String.valueOf(lh.getKh().getId()).equals("0")){
-            return"Khách Hàng Chưa Được Chọn!!";
-        }
-        if(lh.getSdt().isEmpty()){
-            return"Chưa Nhập Số Điện Thoại!";
-        }
-        if(!lh.getSdt().matches(regex)){
-            return"Số Điện Thoại Tối Đa 11 Kí Tự Và Phải Bắt Đầu Bằng 0!";
-        }
-        for (LichHen lichHen: list
-        ) {
-            if(lichHen.getThoiGianDat().equals(lh.getThoiGianDat())){
-                return "Trùng Thời Gian Với 1 Lịch Hẹn Khác! Hãy Chọn Lại!";
-            }
-        }
-        return "ok";
+    private ResponseEntity<String> validate(@RequestBody(required = false) LichHen lh){
+        return ResponseEntity.ok(svlh.validationFormAdd(lh));
     }
 
     @PostMapping("/validateFormUpdate/{id}")
-    private String validateFormUpdate(@PathVariable("id") String id,@RequestBody(required = false) LichHen lh){
-        String regex = "^(0\\d{8,10})$";
-        List<LichHen> list = svlh.getAll();
-        list.remove(svlh.getById(UUID.fromString(id.toLowerCase(Locale.ROOT))));
-        if(lh.getThoiGianDuKien().equals("0")){
-            return "Thời Gian Dự Kiến Chưa Được Chọn!!";
-        }
-        if(String.valueOf(lh.getKh().getId()).equals("0")){
-            return"Khách Hàng Chưa Được Chọn!!";
-        }
-        if(lh.getSdt().isEmpty()){
-            return"Chưa Nhập Số Điện Thoại!";
-        }
-        if(!lh.getSdt().matches(regex)){
-            return"Số Điện Thoại Tối Đa 11 Kí Tự Và Phải Bắt Đầu Bằng 0!";
-        }
-        for (LichHen lichHen: list
-        ) {
-            if(lichHen.getThoiGianDat().equals(lh.getThoiGianDat())){
-                return "Trùng Thời Gian Với 1 Lịch Hẹn Khác! Hãy Chọn Lại!";
-            }
-        }
-        return "ok";
+    private ResponseEntity<String> validateFormUpdate(@PathVariable("id") String id,@RequestBody(required = false) LichHen lh){
+        return ResponseEntity.ok(svlh.validationFormUpdate(id,lh));
     }
 }
