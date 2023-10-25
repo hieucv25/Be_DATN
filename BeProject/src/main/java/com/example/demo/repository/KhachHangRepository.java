@@ -15,6 +15,7 @@ import java.util.UUID;
 
 @Repository
 public interface KhachHangRepository extends JpaRepository<KhachHang, UUID> {
+
     @Override
     <S extends KhachHang> S saveAndFlush(S entity);
 

@@ -13,7 +13,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +23,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-@Controller
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000",allowedHeaders = "*",allowCredentials = "true")
@@ -51,17 +49,6 @@ public class ControllerKhachHang {
     @GetMapping("/getAllCustomer")
     private List<KhachHang> index() {
         return khsv.getAll();
-    }
-
-    @GetMapping("/maxPage")
-    private int totalPage() {
-        int total = khsv.getAll().size();
-        int maxPage = total / 5;
-        if (total % 5 == 0) {
-            return maxPage;
-        } else {
-            return maxPage + 1;
-        }
     }
 
     @GetMapping("/getById/{id}")
@@ -106,6 +93,7 @@ public class ControllerKhachHang {
         }
         kh.setMatKhauMaHoa(passwordEncoder.encode(kh.getMatKhau()));
         kh.setNgayTao(LocalDateTime.now());
+        System.out.println(kh);
         khsv.save(kh);
         if (khsv.existById(kh.getId())) {
             return kh;
@@ -143,6 +131,9 @@ public class ControllerKhachHang {
         if(kh.getQuanHuyen().isEmpty()){
             return "Quận, Huyện Chưa Được Chọn!";
         }
+        if(kh.getXaPhuong().isEmpty()){
+            return "Xã, Phường Chưa Được Chọn!";
+        }
         if(!kh.getEmail().matches(expression)){
             return "Email Chưa Đúng Định Dạng!";
         }
@@ -159,7 +150,8 @@ public class ControllerKhachHang {
     private String validateFormUpdate(@RequestBody(required = false) KhachHang kh,
                                       @PathVariable("id") String id){
         String expression = "^[a-zA-Z0-9._%+-]{1,50}@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
-        String regexNumberPhone = "^(\\+84|0)(3[2-9]|5[2689]|7[06-9]|8[1-9]|9[0-46-8])[0-9]{6}$";
+//        String regexNumberPhone = "^(\\+84|0)(3[2-9]|5[2689]|7[06-9]|8[1-9]|9[0-46-8])[0-9]{6}$";
+        String regexNumberPhone = "^(086|096|097|098|039|038|037|036|035|034|033|032|091|094|088|083|084|085|081|082|070|079|077|076|078|089|090|093|092|052|056|058|099|059|087)\\d{7}$";
         KhachHang kha2 = khsv.getById(UUID.fromString(id));
         List<KhachHang> list = khsv.getAll();
         System.out.println(kh.getId());
