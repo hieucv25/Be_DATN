@@ -106,6 +106,7 @@ public class ControllerKhachHang {
         }
         kh.setMatKhauMaHoa(passwordEncoder.encode(kh.getMatKhau()));
         kh.setNgayTao(LocalDateTime.now());
+        System.out.println(kh);
         khsv.save(kh);
         if (khsv.existById(kh.getId())) {
             return kh;
@@ -142,6 +143,9 @@ public class ControllerKhachHang {
         }
         if(kh.getQuanHuyen().isEmpty()){
             return "Quận, Huyện Chưa Được Chọn!";
+        }
+        if(kh.getXaPhuong().isEmpty()){
+            return "Xã, Phường Chưa Được Chọn!";
         }
         if(!kh.getEmail().matches(expression)){
             return "Email Chưa Đúng Định Dạng!";
